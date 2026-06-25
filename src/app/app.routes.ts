@@ -1,9 +1,4 @@
 import { Routes } from '@angular/router';
-import { WelcomePage } from './features/photos/pages/welcome-page/welcome-page';
+import { PHOTO_ROUTES } from './features/photos/photos.routes';
 
-export const routes: Routes = [
-  {
-    path: '',
-    component: WelcomePage,
-  },
-];
+export const routes: Routes = [...PHOTO_ROUTES];

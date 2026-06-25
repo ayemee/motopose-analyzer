@@ -1,4 +1,4 @@
-<mat-card class="welcome-card">
+<mat-card class="container-card">
   <img src="images/lean-hondo.png" />
 
   <h1 class="title">MotoPose Analyzer</h1>
@@ -7,5 +7,5 @@
     Upload a riding photo and analyze your body position, lean angle, and motorcycle posture.
   </p>
 
-  <button mat-raised-button class="analyze-btn">Analyze My Pose</button>
+  <button mat-raised-button class="analyze-btn" [routerLink]="['/upload']">Analyze My Pose</button>
 </mat-card>
