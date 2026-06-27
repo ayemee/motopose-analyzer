@@ -125,6 +125,18 @@ Run Angular:
 ng serve
 ```
 
+Run Test:
+
+```bash
+npm run test
+```
+
+Run Test on Headless:
+
+```bash
+npm run test:headless
+```
+
 Open:
 
 ```text
