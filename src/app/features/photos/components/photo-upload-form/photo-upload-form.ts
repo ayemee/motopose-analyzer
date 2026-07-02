@@ -24,6 +24,24 @@ export class PhotoUploadForm {
   riderName = '';
   notes = '';
 
+  selectedFile: File | null = null;
+
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+
+    if (!input.files?.length) {
+      return;
+    }
+
+    const file = input.files[0];
+
+    if (!file.type.startsWith('image/')) {
+      return;
+    }
+
+    this.selectedFile = file;
+  }
+
   onSubmit(): void {
     console.log({
       riderName: this.riderName,

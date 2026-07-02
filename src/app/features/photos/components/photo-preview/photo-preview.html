@@ -1,9 +1,3 @@
 <div>
-  <img [src]="previewUrl" alt="Image preview" class="preview-image" />
-
-  <input #fileInput type="file" accept="image/*" hidden (change)="onFileSelected($event)" />
-  <br />
-  <button mat-raised-button class="upload-btn" (click)="fileInput.click()">
-    Upload Riding Photo
-  </button>
+  <img [src]="createObjectURL(file)" alt="Image preview" class="preview-image" />
 </div>

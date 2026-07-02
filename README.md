@@ -1,7 +1,7 @@
 # MotoPose Analyzer 🏍️
 
 <p align="center">
-  <img src="public/images/lean-hondo.png" alt="Hondo RR" width="300">
+  <img src="public/images/hondo-rr.png" alt="Hondo RR" width="300">
 </p>
 
 <p align="center">

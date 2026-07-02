@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
@@ -9,21 +9,12 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrl: './photo-preview.less',
 })
 export class PhotoPreview {
-  previewUrl = 'images/lean-hondo-placeholder.png';
+  @Input() file: File | null = null;
 
-  onFileSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-
-    if (!input.files?.length) {
-      return;
+  createObjectURL(file: File | null): string {
+    if (!file) {
+      return 'images/hondo-rr.png';
     }
-
-    const file = input.files[0];
-
-    if (!file.type.startsWith('image/')) {
-      return;
-    }
-
-    this.previewUrl = URL.createObjectURL(file);
+    return URL.createObjectURL(file);
   }
 }

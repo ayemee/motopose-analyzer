@@ -1,5 +1,6 @@
 <mat-card class="upload-card">
-  <app-photo-preview />
+  <app-photo-preview [file]="selectedFile" />
+  <input type="file" accept="image/*" (change)="onFileSelected($event)" />
 
   <form class="upload-form" (ngSubmit)="onSubmit()">
     <mat-form-field appearance="outline">
