@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
@@ -8,13 +8,19 @@ import { MatButtonModule } from '@angular/material/button';
   templateUrl: './photo-preview.html',
   styleUrl: './photo-preview.less',
 })
-export class PhotoPreview {
+export class PhotoPreview implements OnChanges, OnDestroy {
   @Input() file: File | null = null;
+  previewURL: string = 'images/hondo-rr.png';
 
-  createObjectURL(file: File | null): string {
-    if (!file) {
-      return 'images/hondo-rr.png';
+  ngOnChanges(): void {
+    if (this.file) {
+      this.previewURL = URL.createObjectURL(this.file);
     }
-    return URL.createObjectURL(file);
+  }
+
+  ngOnDestroy(): void {
+    if (this.previewURL && this.previewURL !== 'images/hondo-rr.png') {
+      URL.revokeObjectURL(this.previewURL);
+    }
   }
 }

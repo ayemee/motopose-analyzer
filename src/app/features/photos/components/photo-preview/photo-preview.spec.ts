@@ -20,21 +20,16 @@ describe('PhotoPreview', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should generate image url when file is available', () => {
-    const file = new File(['image'], 'photo.png', { type: 'image/png' });
-
-    spyOn(URL, 'createObjectURL').and.returnValue('mock-preview-url');
-
-    const previewURL = component.createObjectURL(file);
-
-    expect(previewURL).toBe('mock-preview-url');
+  it('should update previewURL when a valid file is provided', () => {
+    const file = new File([''], 'test.jpg', { type: 'image/jpeg' });
+    component.file = file;
+    component.ngOnChanges();
+    expect(component.previewURL).toContain('blob:');
   });
 
-  it('should generate default placeholder when no file is found', () => {
-    const file = null;
-
-    const previewURL = component.createObjectURL(file);
-
-    expect(previewURL).toBe('images/hondo-rr.png');
+  it('should not update previewURL when file is null', () => {
+    component.file = null;
+    component.ngOnChanges();
+    expect(component.previewURL).toBe('images/hondo-rr.png');
   });
 });

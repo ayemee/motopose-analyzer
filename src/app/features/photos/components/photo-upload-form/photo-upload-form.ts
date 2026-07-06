@@ -46,6 +46,7 @@ export class PhotoUploadForm {
     console.log({
       riderName: this.riderName,
       notes: this.notes,
+      file: this.selectedFile,
     });
   }
 }
