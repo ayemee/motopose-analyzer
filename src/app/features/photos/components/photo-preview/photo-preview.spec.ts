@@ -19,47 +19,22 @@ describe('PhotoPreview', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-  it('should keep placeholder when no file is selected', () => {
-    const initialUrl = component.previewUrl;
-    const event = {
-      target: {
-        files: [],
-      },
-    } as unknown as Event;
 
-    component.onFileSelected(event);
-
-    expect(component.previewUrl).toBe(initialUrl);
-  });
-
-  it('should ignore non-image files', () => {
-    const file = new File(['test'], 'test.txt', { type: 'text/plain' });
-
-    const event = {
-      target: {
-        files: [file],
-      },
-    } as unknown as Event;
-
-    component.onFileSelected(event);
-
-    expect(component.previewUrl).toBe('images/lean-hondo-placeholder.png');
-  });
-
-  it('should update preview url when image is selected', () => {
+  it('should generate image url when file is available', () => {
     const file = new File(['image'], 'photo.png', { type: 'image/png' });
 
     spyOn(URL, 'createObjectURL').and.returnValue('mock-preview-url');
 
-    const event = {
-      target: {
-        files: [file],
-      },
-    } as unknown as Event;
+    const previewURL = component.createObjectURL(file);
 
-    component.onFileSelected(event);
+    expect(previewURL).toBe('mock-preview-url');
+  });
 
-    expect(URL.createObjectURL).toHaveBeenCalledWith(file);
-    expect(component.previewUrl).toBe('mock-preview-url');
+  it('should generate default placeholder when no file is found', () => {
+    const file = null;
+
+    const previewURL = component.createObjectURL(file);
+
+    expect(previewURL).toBe('images/hondo-rr.png');
   });
 });

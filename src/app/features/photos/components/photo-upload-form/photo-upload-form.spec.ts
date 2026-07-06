@@ -20,11 +20,23 @@ describe('PhotoUploadForm', () => {
     expect(component).toBeTruthy();
   });
 
-  //check if file is updated when selecting a file
   it('should update selectedFile when a file is selected', () => {
     const file = new File([''], 'test.jpg', { type: 'image/jpeg' });
     const event = { target: { files: [file] } } as unknown as Event;
     component.onFileSelected(event);
     expect(component.selectedFile).toBe(file);
+  });
+
+  it('should set selectedFile to null when no file is selected', () => {
+    const event = { target: { files: [] } } as unknown as Event;
+    component.onFileSelected(event);
+    expect(component.selectedFile).toBeNull();
+  });
+
+  it('should not update selectedFile when a non-image file is selected', () => {
+    const file = new File([''], 'test.txt', { type: 'text/plain' });
+    const event = { target: { files: [file] } } as unknown as Event;
+    component.onFileSelected(event);
+    expect(component.selectedFile).toBeNull();
   });
 });
