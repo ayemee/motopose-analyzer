@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -6,6 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 
 import { PhotoPreview } from '../photo-preview/photo-preview';
+import { UploadPhotoRequest } from '../../models/upload-photo-request.model';
 @Component({
   selector: 'app-photo-upload-form',
   standalone: true,
@@ -26,6 +27,8 @@ export class PhotoUploadForm {
 
   selectedFile: File | null = null;
 
+  @Output() upload = new EventEmitter<UploadPhotoRequest>();
+
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
 
@@ -43,7 +46,11 @@ export class PhotoUploadForm {
   }
 
   onSubmit(): void {
-    console.log({
+    if (!this.selectedFile) {
+      return;
+    }
+
+    this.upload.emit({
       riderName: this.riderName,
       notes: this.notes,
       file: this.selectedFile,

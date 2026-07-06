@@ -39,4 +39,21 @@ describe('PhotoUploadForm', () => {
     component.onFileSelected(event);
     expect(component.selectedFile).toBeNull();
   });
+
+  it('should emit upload event with correct data on submit', () => {
+    const file = new File([''], 'test.jpg', { type: 'image/jpeg' });
+    component.selectedFile = file;
+    component.riderName = 'John Doe';
+    component.notes = 'Test notes';
+
+    spyOn(component.upload, 'emit');
+
+    component.onSubmit();
+
+    expect(component.upload.emit).toHaveBeenCalledWith({
+      riderName: 'John Doe',
+      notes: 'Test notes',
+      file: file,
+    });
+  });
 });

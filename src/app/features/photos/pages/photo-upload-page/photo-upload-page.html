@@ -5,5 +5,5 @@
     Upload a riding photo and analyze your body position, lean angle, and motorcycle posture.
   </p>
 
-  <app-photo-upload-form></app-photo-upload-form>
+  <app-photo-upload-form (upload)="onUpload($event)"></app-photo-upload-form>
 </mat-card>
