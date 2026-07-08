@@ -1,0 +1,6 @@
+@MotoPose.Api_HostAddress = http://localhost:5159
+
+GET {{MotoPose.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
