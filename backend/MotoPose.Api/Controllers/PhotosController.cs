@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using MotoPose.Api.Dtos;
 
 namespace MotoPose.Api.Controllers;
 
@@ -7,9 +8,14 @@ namespace MotoPose.Api.Controllers;
 public class PhotosController : ControllerBase
 {
     [HttpPost]
-    public IActionResult Upload()
+    public IActionResult Upload([FromForm] UploadPhotoRequest request)
     {
         // Implementation for photo upload
-        return Ok("upload endpoint working");
+        return Ok(new
+        {
+            fileName = request.File.FileName,
+            riderName = request.RiderName,
+            notes = request.Notes
+        });
     }
 }
