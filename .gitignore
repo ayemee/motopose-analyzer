@@ -44,3 +44,6 @@ __screenshots__/
 .DS_Store
 Thumbs.db
 node_modules
+
+#remove local file uploads inside wwwroot/uploads
+**/wwwroot/uploads/
