@@ -1,3 +1,5 @@
+using MotoPose.Api.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
@@ -12,6 +14,7 @@ builder.Services.AddCors(options =>
               .AllowAnyMethod();
     });
 });
+builder.Services.AddScoped<IPhotoService, PhotoService>();
 
 var app = builder.Build();
 

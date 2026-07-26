@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Http;
-
 namespace MotoPose.Api.Dtos
 {
     public class UploadPhotoRequest
