@@ -5,39 +5,74 @@ namespace MotoPose.Api.Services;
 public class PhotoService : IPhotoService
 {
    private readonly IWebHostEnvironment _environment;
+   private readonly IPhotoRepository _photoRepository;
 
-    public PhotoService(IWebHostEnvironment environment)
+    public PhotoService(IWebHostEnvironment environment, IPhotoRepository photoRepository)
     {
         _environment = environment;
+        _photoRepository = photoRepository;
     }
     public async Task<UploadPhotoResponse> UploadPhotoAsync(UploadPhotoRequest request)
     {
-        // Build the absolute path to wwwroot/uploads.
+       ValidatePhoto(request.File);
+
+        var fileName = GenerateUniqueFileName(request.File.FileName);
+
+        await SavePhotoAsync(request.File, fileName);
+
+        var photo = new Photo
+        {
+            OriginalFileName = request.File.FileName,
+            FileName = fileName,
+            RiderName = request.RiderName,
+            DateUploaded = DateTime.UtcNow,
+            Notes = request.Notes 
+        };
+
+        await _photoRepository.AddPhotoAsync(photo);
+
+        return CreateResponse(
+            fileName,
+            request.File.FileName,
+            request.RiderName,
+            request.Notes);
+    }
+
+    private void ValidatePhoto(IFormFile? file)
+    {
+        if (file == null || file.Length == 0)
+        {
+            throw new InvalidOperationException("No photo provided.");
+        }
+
+    }
+
+    private string GenerateUniqueFileName(string originalFileName)
+    {
+        return $"{Guid.NewGuid()}{Path.GetExtension(originalFileName)}";
+    }
+
+    private async Task SavePhotoAsync(IFormFile file, string fileName)
+    {
         var uploadFolder = Path.Combine(_environment.WebRootPath, "uploads");
-        
         Directory.CreateDirectory(uploadFolder);
 
-        //preserve the original file name with a unique guid to prevent duplicates
-        var extension = Path.GetExtension(request.File.FileName);
-        var uniqueFileName = $"{Guid.NewGuid()}{extension}";
-
-        //build the full path to save the file
-        var filePath = Path.Combine(uploadFolder, uniqueFileName);
-
-        //create filestream pointing to the file path and close and disposes the stream afterwards
+        var filePath = Path.Combine(uploadFolder, fileName);
         await using var stream = new FileStream(filePath, FileMode.Create);
 
-        //copy the upload file bytes into the destination file
-        await request.File.CopyToAsync(stream);
+        await file.CopyToAsync(stream);
+    }
 
-        // Implementation for photo upload
+    private UploadPhotoResponse CreateResponse(string fileName, string originalFileName, string riderName, string? notes)
+    {
         return new UploadPhotoResponse
         {
-            FileName = uniqueFileName,
-            OriginalFileName = request.File.FileName,
-            RiderName = request.RiderName,
-            Notes = request.Notes,
-            FileUrl = $"/uploads/{uniqueFileName}"
+            FileName = fileName,
+            OriginalFileName = originalFileName,
+            RiderName = riderName,
+            Notes = notes,
+            FileUrl = $"/uploads/{fileName}"
         };
     }
+
 }

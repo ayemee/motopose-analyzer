@@ -1,4 +1,5 @@
 using MotoPose.Api.Services;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,9 @@ builder.Services.AddCors(options =>
     });
 });
 builder.Services.AddScoped<IPhotoService, PhotoService>();
+builder.Services.AddDbContext<MotoPoseDbContext>(options =>     
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddScoped<IPhotoRepository, PhotoRepository>();
 
 var app = builder.Build();
 
